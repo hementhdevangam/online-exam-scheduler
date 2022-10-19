@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+//      function login(){
+//         var uname = document.getElementById('username').value;
+//     var pwd = document.getElementById('password').value;
+//     //alert(uname+" "+pwd);
+    
+//     let data={
+//         email:uname,
+//         password:pwd
+//     }
+//     console.log(JSON.stringify(data));
+//     var data1=JSON.stringify(data)
+//     console.log(data['email']);
+//     var values=fetch("http://localhost:8080/user/signin",{
+//         method:"POST",
+//         body:JSON.stringify(data),
+//         headers:{
+//             "Content-Type":"application/json",
+//             "Access-Control-Allow-Origin":"*"
+//         }
+//     // }).then(response => response.json())
+//     // .then(json => console.log(json));
+//     })
+//     .then(response => console.log(response.body.json()));
+    
+    
+// }    
+async function getUser() {
+  try {
+    var uname = document.getElementById('username').value;
+     var pwd = document.getElementById('password').value;
+    let data={
+        email:uname,
+         password:pwd
+    }
+    const response = await fetch('http://localhost:3001/users/signin',
+    {method:"POST",
+        body:JSON.stringify(data),
+        headers:{
+            "Content-Type":"application/json",
+            "Access-Control-Allow-Origin":"*"
+        }});
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    }
+    const result = await response.text();
+    return result;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function login(){
+    console.log(await getUser());
+    if (await getUser()=="Valid User"){
+        window.location="http://127.0.0.1:5501/home.html"
+    }else{
+        console.log("InValid User name or Password");
+    }
+}
+</script>
+<body style="background-color: rgb(118, 242, 207);">
+    <div id="login-div" style="background-color: rgb(225, 251, 109);">
+        <h2 style="color: black;">User Login</h2>
+        Username:<input type="text" id = "username" style="color: black;"><br><br>
+        Password:<input type="password" id = "password" style="color: black;"><br><br>
+        <input  href="home.html" type="submit" value="Login" onclick="login()"> <br>
+        <a href="signup.html" style="color: black;">Not yet registered? Please signUp</a>
+        <hr style="color: black;">
+        <a href="adminlog.html"style="color: black;">Admin Login</a>
+    </div>
+   
+</body>
+</html>

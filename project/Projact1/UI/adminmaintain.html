@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admins</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</head>
+<script>
+    
+    function addUser(){
+        var eml = document.getElementById('user-email').value;
+        var pwd = document.getElementById('password').value;
+        let data = {
+            email: eml,
+            password: pwd
+       }
+
+        fetch('http://localhost:3003/admin/',{
+        method:"POST",
+        body: JSON.stringify(data),
+        headers : {
+            "Content-Type":"application/json",
+            "Access-Control-Allow-Origin":"*"
+        }
+       }).then(response => response.json())
+         .then(json => console.log(json));
+         
+         alert("Admin Added Successfully !!! ")
+    }
+   
+    async function getUsers(){
+        const resp = await fetch('http://localhost:3003/admin/');
+        var data = await resp.json();
+        console.log(data);
+        let tab = `<tr> 
+                   <th> AdminId </th>
+                   <th> Email </th>
+                   <th> Password </th>
+                   <th> Edit </th>
+                   <th> Delete </th>
+                   </tr>`;
+                   for( let p of data){
+                    tab += `<tr> 
+                            <td id ="edit-id">${p.userId}</td>
+                            <td id="edit-email">${p.email}</td>
+                            <td id="edit-pass">${p.password}</td>
+                            <td> <button class="btn btn-warning" type="submit"> <a style= "color:black" onclick="getUserById()">EDIT</a></button> </td>
+                            <td> <button class="btn btn-danger" type="submit"> <a style= "color:black" onclick="deleteUserById()">DELETE</a></button></td>                            
+                        </tr>`
+                   }
+                   document.getElementById("user-table").innerHTML = tab;
+    }
+    async function getUserById(){
+        idNumEdit();
+        var et=document.getElementById('user-id2').value;
+        const resp = await fetch('http://localhost:3003/admin/'+et);
+        var data = await resp.json();
+        console.log(data);
+        var uid=data["userId"]; 
+        var uemail=data["email"]; 
+        var upass=data["password"]; 
+        document.getElementById('user-email').value=uemail;
+        document.getElementById('password').value=upass;
+        console.log(uid);
+        let tab = `<tr> 
+                   <th> ID </th>
+                   <th> Email </th>
+                   <th> Password </th>
+                   <th> Edit </th>
+                   <th> Delete </th>
+                   </tr>`;
+                   
+                    tab = `<tr> 
+                            <td id ="edit-id">${data.userId}</td>
+                            <td id="edit-email">${data.email}</td>
+                            <td id="edit-pass">${data.password}</td>
+                            <td> <button type="submit" ><a  >Save</a></button> </td>
+                            <td><button type="submit"  > <a>DELETE</a></button></td>                            
+                        </tr>`
+                  
+    }
+    function updateUser(){
+        idNumEdit();
+        var et=document.getElementById('user-id2').value;
+        var eml = document.getElementById('user-email').value;
+        var pwd = document.getElementById('password').value;
+        let data = {
+            email: eml,
+            password: pwd
+       }
+
+        fetch('http://localhost:3003/admin/'+et,{
+        method:"PUT",
+        body: JSON.stringify(data),
+        headers : {
+            "Content-Type":"application/json",
+            "Access-Control-Allow-Origin":"*"
+        }
+       }).then(response => response.json())
+         .then(json => console.log(json));
+         
+         alert("Admin Updated Successfully !!! ");
+    }
+    function deleteUserById(){
+        idNum();
+        var del = document.getElementById('user-id1').value;
+        
+       alert("Do you want to delete Admin record!!")
+        fetch('http://localhost:3003/admin/'+del,{
+        method:"DELETE"})
+        
+         
+         alert("Admin deleted Successfully !!! ");
+    }
+    function idNum(){
+        var delete_id=document.getElementById('user-id1').value;
+        console.log(delete_id);
+    }
+    function idNumEdit(){
+        var edit_id=document.getElementById('user-id2').value;
+        console.log(edit_id);
+    }
+   
+</script>
+<body style="background-color: rgb(194, 188, 160);">
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Exam Sitting Arrengement</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">ADMIN ACCOUNT</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="adminhome.html">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="studentedit.html">Maintain Students</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="usersmaintain.html">Maintain Users</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="adminmaintain.html">Maintain Admins</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Contact Details
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="#">Contact Us</a></li>
+                    <li><a class="dropdown-item" href="#">About Us</a></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="adminlog.html">Logout</a>
+                </li>
+              </ul>
+              
+            </div>
+          </div>
+        </div>
+      </nav>
+    <br><br><br>
+    <h2 style="text-align: centre; color:black">Maintain Admins:</h2>
+    <div class="container text-center">
+        <div class="row">
+          <div class="col">
+            <br><br><br>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Admin Email</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="user-email">
+               
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Admin Password</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="password">
+                
+              </div>
+              
+              
+              <div class="container text-center">
+                <div class="row">
+                  <div class="col">
+                    <button class="btn btn-primary" onclick="addUser()"> ADD Admin</button>
+                  </div>
+                  <div class="col">
+                    <button class="btn btn-primary" onclick="updateUser()"> Update Admin</button>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="col">
+            <br><br><br>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Delete AdminById</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="user-id1">
+                <button class="btn btn-primary" onclick="idNum()"> Enter </button> <br><br>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Edit AdminById</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="user-id2">
+                <button class="btn btn-primary" onclick="idNumEdit()"> Enter </button>
+              </div>
+          </div>
+          
+        </div>
+      </div> 
+    </div>
+    <div>
+        <h2 style="text-align: centre; color:black">Admin List:</h2>
+        <div class="container text-center">
+            <div class="row">
+              <div class="col-1" style="width: 150px;">
+                <button class="btn btn-primary" onclick="getUsers()"> List Admins </button>
+              </div>
+              <div class="col-8">  
+                <table id="user-table" class="table table-dark table-hover">   
+                </table>
+              
+              <div class="col">
+                
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h2><a id="back" href="adminhome.html">Back</a></h2>
+</body>
+</html>

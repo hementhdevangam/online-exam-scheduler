@@ -1,0 +1,65 @@
+body{
+    background-color: rgb(18, 192, 111);
+}
+#login-div,#signup-div{
+    background-color: rgb(139, 156, 51);
+    border:1px solid black;
+    width:fit-content;
+    padding: 20px 20px 20px 20px;
+    text-align: center;
+    margin:auto ;
+    margin-top: 15%;
+}
+a{
+    color: white;
+}
+
+.home-div{
+    height: 100px;
+}
+ul#horizontal-list {
+    list-style: none;
+}
+ul#horizontal-list li{
+    display: inline;
+    color: white;
+    font-size: 24px;
+    margin: 2%;
+
+}
+ul li a#logout{
+    margin-right: 20px;
+    float: right;
+    text-decoration: none;
+}
+ul li a#products{
+    text-decoration: none;
+}
+#my-table table{
+    color: White;
+    
+}
+#my-table{
+    background-color: rebeccapurple;
+    width:20%;
+    text-align: center;
+
+}
+#my-table table,h2{
+    color: white;
+    text-align: center;
+
+}
+table,th,td{
+    border: 1px solid white;
+    border-collapse: collapse;
+    width:fit-content;
+    margin: auto;
+    text-align: center;
+}
+th,td{
+    padding: 15px;
+}
+#back{
+    text-decoration: none;
+}
